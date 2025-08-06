@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Lirik Sempurna</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: #f0f0f0;
+      padding: 30px;
+    }
+
+    #lyrics {
+      white-space: pre-wrap;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      padding: 20px;
+      min-height: 200px;
+      background-color: #fff;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>HALOO NOPIAA SAYANGGG <br> kamuu tu kaya laguu inii tauuu <br>nii cobaa denger</h2>
+
+
+  <button onclick="playAll()">Play Lirik + Musik 🎶</button>
+  <div id="lyrics"></div>
+
+  <audio id="bgmusic" src="sempurna.mp3"></audio>
+
+  <script>
+    const lyrics = [
+      { text: "Janganlah kau tinggalkan diriku", time: 8, speed: 100 },
+      { text: "Takkan mampu menghadapi semua", time: 13, speed: 100 },
+      { text: "Hanya bersamamu ku akan bisa", time: 18, speed: 100 },
+      { text: "Kau adalah darahku", time: 23, speed: 100 },
+      { text: "Kau adalah jantungku", time: 27, speed: 100 },
+      { text: "Kau adalah hidupku lengkapi diriku", time: 32, speed: 100 },
+      { text: "Oh sayangku kau begitu", time: 37, speed: 100 },
+      { text: "Sempurnaaaaaaaaaaaaa", time: 43, speed: 100 }
+    ];
+
+    let timeoutHandles = []; // buat simpan semua setTimeout yg aktif
+    let typingInProgress = false;
+
+    async function playAll() {
+      // Kalau lagi typing, hentikan dulu semuanya
+      if (typingInProgress) {
+        stopTyping();
+      }
+
+      const container = document.getElementById("lyrics");
+      const audio = document.getElementById("bgmusic");
+
+      container.innerHTML = "";
+      typingInProgress = true;
+
+      // Reset dan play ulang audio
+      audio.pause();
+      audio.currentTime = 0;
+      audio.play();
+
+      // Set timeout untuk setiap bait
+      for (let i = 0; i < lyrics.length; i++) {
+        const delay = lyrics[i].time * 1000;
+        const handle = setTimeout(() => {
+          typeText(container, lyrics[i].text + "\n", lyrics[i].speed);
+        }, delay);
+        timeoutHandles.push(handle);
+      }
+    }
+
+    function stopTyping() {
+      // Hentikan semua timeout
+      timeoutHandles.forEach(clearTimeout);
+      timeoutHandles = [];
+      typingInProgress = false;
+
+      // Reset konten lirik
+      document.getElementById("lyrics").innerHTML = "";
+    }
+
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function typeText(container, text, speed) {
+      for (let char of text) {
+        container.textContent += char;
+        await wait(speed);
+      }
+    }
+  </script>
+
+</body>
+</html>
+   
